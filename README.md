@@ -8,21 +8,28 @@ Daily weather comparison (defaults: Los Angeles `90045` vs Lake Oswego `97034`) 
 
 This repo is the **source of truth** (HTML/CSS/JS, `data.json`, fetch script, Actions).
 
-A GitHub Action (`deploy-to-site.yml`) copies the static files into
+A GitHub Action (`Deploy to dkossin.com/weather`) copies the static files into
 [`davidkossin/davidkossin.github.io`](https://github.com/davidkossin/davidkossin.github.io)
 under `weather/`, so the app stays on the same URL path:
 
 `https://dkossin.com/weather/`
 
-(GitHub Pages project sites cannot mount under a custom path of a user domain; mirroring into the user site is intentional.)
+GitHub Pages project sites cannot mount under a custom path of a user domain;
+mirroring into the user site (option B) is intentional.
 
 Shared site chrome (`styles.css`, `stars.js`) is loaded from `https://dkossin.com/`.
 
+Deploy uses a **write deploy key** on the site repo (`SITE_DEPLOY_KEY` secret here).
+
 ## Daily data updates
 
-Workflow `update-weather.yml` runs daily ~7:00 AM PT (`cron: 0 14 * * *`) and on
+Workflow `Update weather data` runs daily ~7:00 AM PT (`cron: 0 14 * * *`) and on
 manual dispatch. It runs `scripts/fetch_weather.py` (Open-Meteo archive API) and
-commits `data.json` when data changes. That push then triggers deploy to the site.
+commits `data.json` when data changes.
+
+Because commits made with `GITHUB_TOKEN` do not start other workflows, deploy is
+also triggered via `workflow_run` when that update finishes successfully (in
+addition to deploys on normal pushes of app files).
 
 ## Local development
 
