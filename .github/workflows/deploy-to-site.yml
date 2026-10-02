@@ -10,6 +10,11 @@ on:
       - "data.json"
       - "SITE_FOLDER_README.md"
       - ".github/workflows/deploy-to-site.yml"
+  # Commits from update-weather use GITHUB_TOKEN and do not retrigger push
+  # workflows; watch that workflow instead so daily data still reaches the site.
+  workflow_run:
+    workflows: ["Update weather data"]
+    types: [completed]
   workflow_dispatch:
 
 concurrency:
@@ -19,11 +24,16 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout weather-tracker
         uses: actions/checkout@v4
         with:
           path: weather-tracker
+          # For workflow_run, check out the SHA that finished updating
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Checkout site repo
         uses: actions/checkout@v4
