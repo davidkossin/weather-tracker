@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Weather comparison by city or ZIP. Defaults: Los Angeles 90045 vs Lake Oswego 97034." />
+  <title>Weather Tracker · Objects In Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dkossin.com/styles.css" />
+  <link rel="stylesheet" href="weather.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="weather.js" defer></script>
+</head>
+<body class="weather-page">
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="https://dkossin.com/">Objects In Space</a>
+    <nav>
+      <a href="https://dkossin.com/">Home</a>
+      <a class="active" href="./">Weather</a>
+    </nav>
+  </header>
+
+  <main class="weather-main">
+    <header class="weather-hero">
+      <p class="eyebrow">Daily comparison</p>
+      <h1>Weather Tracker</h1>
+      <p class="tagline" id="tagline">
+        Los Angeles <span class="zip">90045</span> vs Lake Oswego <span class="zip">97034</span>,
+        from the start of 2026 through today.
+      </p>
+      <p class="meta" id="meta">Loading weather data…</p>
+    </header>
+
+    <form class="zip-picker" id="zip-form" novalidate>
+      <div class="zip-fields">
+        <div class="zip-field">
+          <label for="zip-a"><span class="swatch swatch-a" aria-hidden="true"></span> City A</label>
+          <div class="place-input-wrap">
+            <input
+              id="zip-a"
+              name="zipA"
+              type="text"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="zip-a-suggestions"
+              aria-expanded="false"
+              autocomplete="off"
+              placeholder="City or ZIP"
+              value="90045"
+              required
+            />
+            <ul class="place-suggestions" id="zip-a-suggestions" role="listbox" hidden></ul>
+          </div>
+          <p class="zip-resolved" id="zip-a-resolved">Los Angeles, CA</p>
+        </div>
+        <div class="zip-field">
+          <label for="zip-b"><span class="swatch swatch-b" aria-hidden="true"></span> City B</label>
+          <div class="place-input-wrap">
+            <input
+              id="zip-b"
+              name="zipB"
+              type="text"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="zip-b-suggestions"
+              aria-expanded="false"
+              autocomplete="off"
+              placeholder="City or ZIP"
+              value="97034"
+              required
+            />
+            <ul class="place-suggestions" id="zip-b-suggestions" role="listbox" hidden></ul>
+          </div>
+          <p class="zip-resolved" id="zip-b-resolved">Lake Oswego, OR</p>
+        </div>
+      </div>
+      <div class="zip-actions">
+        <button type="submit" class="btn primary" id="zip-compare">Compare</button>
+        <button type="button" class="btn ghost" id="zip-reset">Reset to defaults</button>
+      </div>
+      <p class="zip-error" id="zip-error" role="alert" hidden></p>
+    </form>
+
+    <section class="chart-grid" aria-live="polite">
+      <article class="chart-card">
+        <h2>High &amp; low temperature</h2>
+        <p class="chart-note">Daily max and min (°F)</p>
+        <div class="chart-wrap">
+          <canvas id="chart-temp"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <h2>Humidity</h2>
+        <p class="chart-note">Daily mean relative humidity (%)</p>
+        <div class="chart-wrap">
+          <canvas id="chart-humidity"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <h2>Rain</h2>
+        <p class="chart-note">Daily rainfall (inches)</p>
+        <div class="chart-wrap">
+          <canvas id="chart-rain"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <h2>Cloud coverage</h2>
+        <p class="chart-note">Daily mean cloud cover (%)</p>
+        <div class="chart-wrap">
+          <canvas id="chart-cloud"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <h2>Daylight hours</h2>
+        <p class="chart-note">Total daylight duration (hours)</p>
+        <div class="chart-wrap">
+          <canvas id="chart-daylight"></canvas>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span>Data from Open-Meteo · Defaults updated daily via GitHub Actions</span>
+  </footer>
+
+  <script src="https://dkossin.com/stars.js"></script>
+</body>
+</html>

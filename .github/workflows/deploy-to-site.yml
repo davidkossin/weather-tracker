@@ -1,0 +1,57 @@
+name: Deploy to dkossin.com/weather
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "weather.css"
+      - "weather.js"
+      - "data.json"
+      - "SITE_FOLDER_README.md"
+      - ".github/workflows/deploy-to-site.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-weather-to-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout weather-tracker
+        uses: actions/checkout@v4
+        with:
+          path: weather-tracker
+
+      - name: Checkout site repo
+        uses: actions/checkout@v4
+        with:
+          repository: davidkossin/davidkossin.github.io
+          ssh-key: ${{ secrets.SITE_DEPLOY_KEY }}
+          path: site
+
+      - name: Sync static files into site/weather
+        run: |
+          mkdir -p site/weather
+          cp weather-tracker/index.html \
+             weather-tracker/weather.css \
+             weather-tracker/weather.js \
+             weather-tracker/data.json \
+             site/weather/
+          cp weather-tracker/SITE_FOLDER_README.md site/weather/README.md
+
+      - name: Commit and push to site
+        working-directory: site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add weather/
+          if git diff --cached --quiet; then
+            echo "No site weather/ changes to deploy"
+            exit 0
+          fi
+          SHORT=$(cd ../weather-tracker && git rev-parse --short HEAD)
+          git commit -m "Deploy weather tracker from weather-tracker@${SHORT}"
+          git push

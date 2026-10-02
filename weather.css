@@ -1,0 +1,357 @@
+.weather-page {
+  min-height: 100vh;
+}
+
+.topbar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.75rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.topbar .brand {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.topbar nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.topbar nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.topbar nav a:hover,
+.topbar nav a.active {
+  color: var(--accent);
+}
+
+.weather-main {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1rem 1.75rem 3rem;
+}
+
+.weather-hero {
+  max-width: 40rem;
+  margin-bottom: 1.5rem;
+}
+
+.weather-hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.weather-hero .zip {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.weather-hero .meta {
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  color: rgba(154, 163, 199, 0.9);
+}
+
+.zip-picker {
+  margin-bottom: 1.75rem;
+  padding: 1.1rem 1.15rem;
+  background: rgba(10, 14, 32, 0.72);
+  border: 1px solid rgba(232, 236, 255, 0.1);
+  border-radius: 1.1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.06);
+}
+
+.zip-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.zip-field label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.swatch-a {
+  background: #E06900;
+  box-shadow: 0 0 8px rgba(224, 105, 0, 0.45);
+}
+
+.swatch-b {
+  background: #0072B2;
+  box-shadow: 0 0 8px rgba(0, 114, 178, 0.45);
+}
+
+.zip-field input {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(232, 236, 255, 0.18);
+  background: rgba(5, 8, 20, 0.75);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.05rem;
+  letter-spacing: normal;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.zip-field input:focus {
+  border-color: rgba(125, 211, 252, 0.55);
+  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.15);
+}
+
+.zip-resolved {
+  margin-top: 0.35rem;
+  min-height: 1.2em;
+  font-size: 0.8rem;
+  color: rgba(154, 163, 199, 0.95);
+}
+
+.zip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.zip-picker .btn {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.25rem;
+}
+
+.zip-picker .btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.zip-picker .btn.ghost {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(232, 236, 255, 0.28);
+  color: var(--text);
+}
+
+.zip-error {
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  color: #f4a261;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.chart-card {
+  background: rgba(10, 14, 32, 0.72);
+  border: 1px solid rgba(232, 236, 255, 0.1);
+  border-radius: 1.1rem;
+  padding: 1.15rem 1.15rem 0.75rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.06);
+  min-width: 0;
+}
+
+.chart-card h2 {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.chart-note {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.chart-wrap {
+  position: relative;
+  height: min(360px, 55vh);
+  margin-top: 0.75rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .chart-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .chart-card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .chart-card:first-child .chart-wrap {
+    height: min(420px, 50vh);
+  }
+}
+
+/* Narrow / mobile viewports */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0.9rem 1rem;
+  }
+
+  .weather-main {
+    padding: 0.75rem 1rem 2.5rem;
+  }
+
+  .weather-hero {
+    margin-bottom: 1.15rem;
+  }
+
+  .weather-hero h1 {
+    font-size: clamp(1.75rem, 9vw, 2.35rem);
+  }
+
+  .weather-hero .tagline {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .weather-hero .meta {
+    font-size: 0.85rem;
+  }
+
+  .zip-fields {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .zip-picker {
+    padding: 1rem;
+  }
+
+  .zip-field input {
+    font-size: 1.1rem;
+    min-height: 2.85rem;
+  }
+
+  .zip-actions {
+    flex-direction: column;
+  }
+
+  .zip-actions .btn {
+    width: 100%;
+  }
+
+  .chart-card {
+    padding: 1rem 0.85rem 0.65rem;
+  }
+
+  .chart-card h2 {
+    font-size: 1.05rem;
+  }
+
+  .chart-wrap {
+    height: min(280px, 48vh);
+  }
+
+  footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .chart-wrap {
+    height: min(240px, 45vh);
+  }
+}
+
+.place-input-wrap {
+  position: relative;
+}
+
+.zip-field input::placeholder {
+  color: rgba(154, 163, 199, 0.55);
+  letter-spacing: normal;
+}
+
+.place-suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0.35rem 0;
+  list-style: none;
+  max-height: 14rem;
+  overflow-y: auto;
+  background: rgba(8, 12, 28, 0.98);
+  border: 1px solid rgba(232, 236, 255, 0.16);
+  border-radius: 0.65rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+.place-suggestions[hidden] {
+  display: none;
+}
+
+.place-suggestion {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 0.85rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.place-suggestion:hover,
+.place-suggestion[aria-selected="true"] {
+  background: rgba(125, 211, 252, 0.12);
+  color: #e8ecff;
+}
+
+.place-suggestion .place-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: rgba(154, 163, 199, 0.95);
+}
+
+.place-suggestions-empty {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+  color: rgba(154, 163, 199, 0.95);
+}
